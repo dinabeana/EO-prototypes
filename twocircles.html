@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Half-Circle</title>
+    <style>
+        #circleContainer {
+            width: 100px;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(to right, red 50%, blue 50%);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #hello {
+            width: 200px;
+            height: 100px; 
+            background-color: red;
+            border-top-left-radius: 110px;  
+            border-top-right-radius: 110px;
+            border: 10px solid red;
+            position: relative;
+            border-bottom: 0;
+            float: right; /* Change this to left to float it to left */
+            transform: rotate(90deg);
+            transition: all 0.3s ease;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="circleContainer" onclick="moveCircle()">
+    <div id="circle"></div>
+  
+</div>
+
+
+<div id="hello"></div>
+
+<script>
+    function moveCircle() {
+        var circle = document.getElementById('hello');
+        var currentPosition = circle.style.top.replace('px', '') || 0;
+        currentPosition = parseInt(currentPosition, 10);
+        
+        if (currentPosition === 0) {
+            circle.style.top = '-60px';
+        } else {
+            circle.style.top = '0';
+        }
+    }
+</script>
+
+</body>
+</html>

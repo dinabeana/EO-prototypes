@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EO Interactive Prototypes</title>
+    <style>
+        body {
+            display: flex;
+            color: white;
+            font-size: 2rem;
+            height: 100vh;
+            background-color: black;
+            font-family: Helvetica;
+            line-height: 50px;
+        }
+
+        .eye {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 50%;
+            margin: 15px;
+            position: relative;
+            left: 800px;
+            top: 400px;
+        }
+
+        #hypnoeye {
+            left: 927px;
+            top: 60px;
+        }
+
+        .pupil {
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            pointer-events: none;
+        }
+
+        span {
+            color: red;
+        }
+        
+        a {
+            color: yellow
+        }
+
+        a:hover {
+            background-color: yellow;
+            color: black
+         }
+
+         img {
+            border-radius: 50%;
+            -webkit-transition: -webkit-transform 0.8s ease-in-out;
+                    transition: transform 0.8s ease-in-out;
+            }
+
+            img:hover {
+            -webkit-transform: rotate(90deg);
+                    transform: rotate(90deg);
+            }
+    </style>
+</head>
+<body>
+
+        <div class="eye">
+            <div class="pupil"></div>
+        </div>
+        <div class="eye">
+            <div class="pupil"></div>
+        </div>
+
+        <div class="eye" id="hypnoeye">
+            <div class="pupil"></div>
+        </div>
+
+
+        <div>
+            
+            <h3><span class="altcolor">EXTRA</span>ORDINARY!<br/>Interactive<br/>Prototypes</h3>
+    
+            <ul>
+            <li><a href="ascii-ticker2.html">ascii ticker</a></li>
+            <li><a href="forms-animate.html">form elements randomizer</a></li>
+            <li><a href="p5-circles.html">two half circles animated</a></li>
+            <li>ascii image before/after slider</li>
+
+            </ul>
+
+            <img class="artist1" src="imgs/artist.png"   height="300"/>
+
+            <img class="artist1" src="imgs/artist.png"   height="300"/>
+
+            <img class="artist1" src="imgs/artist.png"   height="300"/>
+
+            <img class="artist1" src="imgs/artist.png"   height="300"/>
+
+        </div>
+
+        <div><img src="imgs/hypnosis-eye.jpg" width="200px"></div>
+
+
+      
+
+    <script>
+        document.addEventListener('mousemove', (event) => {
+            const eyes = document.querySelectorAll('.eye');
+            eyes.forEach(eye => {
+                const {left, top, width, height} = eye.getBoundingClientRect();
+                const eyeCenterX = left + width / 2;
+                const eyeCenterY = top + height / 2;
+                const mouseX = event.clientX;
+                const mouseY = event.clientY;
+                const deltaX = mouseX - eyeCenterX;
+                const deltaY = mouseY - eyeCenterY;
+                const angle = Math.atan2(deltaY, deltaX);
+                const distance = Math.min(eye.offsetWidth / 4, Math.hypot(deltaX, deltaY));
+                const pupilX = distance * Math.cos(angle);
+                const pupilY = distance * Math.sin(angle);
+                const pupil = eye.querySelector('.pupil');
+                pupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

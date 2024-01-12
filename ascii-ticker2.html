@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continuous ASCII Ticker</title>
+    <style>
+        body {
+            background-color: black;
+            background-image: url('imgs/glow-bg.png');
+            background-size: 100%;
+
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .ticker {
+            white-space: nowrap;
+            overflow: hidden;
+            background: black;
+            position: fixed;
+            width: 100%;
+            top: 0px;
+            font-family: "Courier New", Courier, monospace;
+
+        }
+
+        .ticker span {
+            display: inline-block;
+            min-width: 100%;
+            animation: ticker 30s linear infinite;
+            color: #8c78ba; ; 
+            cursor: pointer;
+        }
+
+        .ticker span:hover {
+            color:  #d529cd;;
+        }
+
+        /*Transition*/
+        * {
+        transition-timing-function: ease-in-out;
+        -ms-transition-timing-function: ease-in-out;
+        -moz-transition-timing-function: ease-in-out;
+        -webkit-transition-timing-function: ease-in-out;
+        -o-transition-timing-function: ease-in-out;
+        transition-duration: 0.4s;
+        -ms-transition-duration: 0.4s;
+        -moz-transition-duration: 0.4s;
+        -webkit-transition-duration: 0.4s;
+        -o-transition-duration: 0.4s;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .content {
+            margin-top: 50px;
+            padding: 20px;
+        
+        }
+
+        a.green:hover { color: #1ace84; }
+        a.purple:hover { color: #a262c0; }
+        a.teal:hover { color: #4ac0aa; }
+        a.violet:hover { color: #8c78ba; }
+        a.pink:hover { color: #d529cd; }
+
+        #div5 {
+            font-size: 1rem;
+            color:  #d529cd;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticker">
+        <span>  
+        <table>
+            <tr>
+                <td><pre>
+  /\_/\    /\_/\      /\_/\   
+ ( o.o )  ( o.o )    ( o.o ) 
+  > ^ <    > ^ <      > ^ <
+                </pre>
+                </td>
+                <td>
+                    <div id="div2"></div>
+                </td>
+                <td>
+                    <div id="div5"></div>
+                </td>
+   
+                <td><pre>
+ /\_/\    /\_/\   
+( o.o )  ( o.o ) 
+ > ^ <    > ^ <  
+                </pre>
+                </td>
+                <td>
+                    <div id="div3"></div>
+                </td>
+                <td><pre>
+  /\_/\    /\_/\      /\_/\   
+ ( o.o )  ( o.o )    ( o.o ) 
+  > ^ <    > ^ <      > ^ <
+                </pre>
+                </td>
+            </td>
+            <td><pre>
+ /\_/\    /\_/\      /\_/\   
+( o.o )  ( o.o )    ( o.o ) 
+ > ^ <    > ^ <      > ^ <
+            </pre>
+            </td>
+        </td>
+        <td><pre>
+ /\_/\    /\_/\      /\_/\   
+( o.o )  ( o.o )    ( o.o ) 
+ > ^ <    > ^ <      > ^ <
+        </pre>
+        </td>
+                <td>
+                    <div id="div4"></div>
+                </td>
+            </tr>
+        </table>
+            <!-- Repeat or extend this pattern to make it as long as needed -->
+        </span>
+      
+    </div>
+    <div class="content">
+     
+    </div>
+    <script>
+        // JavaScript to add random paragraphs and headers
+    /*    const contentDiv = document.querySelector('.content');
+        const randomParagraphs = Math.floor(Math.random() * 5) + 3; // Random number between 3 and 7
+
+        for (let i = 0; i < randomParagraphs; i++) {
+            const header = document.createElement('h2');
+            header.textContent = `Header ${i + 1}`;
+            contentDiv.appendChild(header);
+
+            const paragraph = document.createElement('p');
+            paragraph.textContent = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...';
+            contentDiv.appendChild(paragraph);
+        }
+
+   */     /*	
+            usage: ASCIIAnimation(param1, param2, param3)
+            
+            param1 - array of animation 'frames' (strings)
+            param2 - speed of animation in ms
+            param3 - DOM target, inserts animation to .innerHTML (retains spaces)
+            
+            ex: 
+            var anim1 = new ASCIIAnimation(["1","2","3"], 100, div1);
+        */
+
+        function ASCIIAnimation(animArray, speed, DOMtarget) {
+        var currentFrame = 0;
+            for(var i = 0; i < animArray.length; i++) {
+                animArray[i] = animArray[i].replace(/ /g,"&nbsp;");
+                animArray[i] = "<pre>" + animArray[i] + "</pre>";
+            }
+            DOMtarget.innerHTML = animArray[0];
+            currentFrame++;
+            this.animation = setInterval(function() {
+                DOMtarget.innerHTML = animArray[currentFrame];
+                currentFrame++;
+                if(currentFrame >= animArray.length) currentFrame = 0;
+            }, speed);
+            this.getCurrentFrame = function() {
+                return currentFrame;
+            }
+        }
+
+        ASCIIAnimation.prototype.stopAnimation = function() {
+            clearInterval(this.animation);
+        }
+
+   
+        var animArray2 = ["///","|||","\\\\\\","|||"];
+        var anim2 = new ASCIIAnimation(animArray2, 100, div2);
+
+        var animArray3 = [".(^-^)'","-(^-^)-","'(^-^).","-(^o^)-",".(^-^)'","-(^-^)-","'(^-^).","-(^-^)-"];
+        var anim3 = new ASCIIAnimation(animArray3, 125, div3);
+
+        var animArray4 = [
+            "[>    ]",
+            "[>>   ]",
+            "[>>>  ]",
+            "[ >>> ]",
+            "[  >>>]",
+            "[   >>]",
+            "[    >]",
+            "[     ]"
+        ];
+        var anim4 = new ASCIIAnimation(animArray4, 60, div4);
+
+        var animArray5 = [
+            "Pet me",
+            "pEt me",
+            "peT me",
+            "pet Me",
+            "pet mE",
+            "PET ME",
+            "pet me",
+
+        ];
+        var anim5 = new ASCIIAnimation(animArray5, 300, div5);
+
+
+
+            function getRandomClass()
+            {
+                //Store available css classes
+                var classes = new Array("green", "purple", "teal", "violet", "pink");
+                
+                //Give a random number from 0 to 5
+                var randomNumber = Math.floor(Math.random()*6);
+                
+                return classes[randomNumber];
+            }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>p5.js Sketch</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let circleY, secondCircleY;
+        let canvasHeight;
+        let img1, img2, maskedImg1, maskedImg2;
+        const circleSize = 200;
+        const moveSpeed = 8;
+        let overlapDistance = 50;
+        let fading = false;
+        let fadeAmount = 0;
+        let textString = "EXTRAORDINARY!";
+        let textIndex = 0;
+        let textInterval = 10;
+        let textTimer = 0;
+        let textFlag = false;
+        const letterSpacing = 25; // Variable to control spacing between letters
+
+        function preload() {
+            img1 = loadImage('https://i0.wp.com/blog.treasurie.com/wp-content/uploads/2021/04/types-of-yarn-3.jpg');
+            img2 = loadImage('https://www.thisiscolossal.com/wp-content/uploads/2022/05/hottea-3.jpg');
+        }
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            circleY = 0;
+            circleX = 0;
+            secondCircleY = windowHeight;
+            canvasHeight = windowHeight;
+            canvasWidth = windowWidth;
+
+
+            maskedImg1 = createMaskedCircle(img1);
+            maskedImg2 = createMaskedCircle(img2);
+            textSize(32);
+            textStyle(BOLD);
+        }
+
+        function draw() {
+            background(0);
+
+            let targetY = canvasHeight / 2 - overlapDistance;
+            let targetX = canvasWidth / 2;
+
+            if (circleY < targetY) {
+                circleY += moveSpeed;
+            } else if (!fading) {
+                fading = true;
+            }
+
+            if (secondCircleY > targetY + overlapDistance * 2) {
+                secondCircleY -= moveSpeed;
+            } else if (!fading) {
+                fading = true;
+            }
+
+            image(maskedImg1, width / 2 - 100, circleY, circleSize, circleSize);
+            image(maskedImg2, width / 2 + 100, secondCircleY, circleSize, circleSize);
+
+            if (fading) {
+                if (fadeAmount < 255) {
+                    fadeAmount += 5;
+                }
+                applyFade(width / 2 - 100, circleY, false, fadeAmount);
+                applyFade(width / 2 + 100, secondCircleY, true, fadeAmount);
+            }
+
+            displayText();
+
+
+
+        }
+
+        function applyFade(x, y, fadeLeft, fadeAmount) {
+            let fade = createGraphics(circleSize, circleSize);
+            fade.fill(0, fadeAmount);
+            fade.noStroke();
+
+            if (fadeLeft) {
+                fade.rect(0, 0, circleSize / 2, circleSize);
+            } else {
+                fade.rect(circleSize / 2, 0, circleSize / 2, circleSize);
+            }
+
+            image(fade, x, y);
+        }
+
+        function displayText() {
+            textAlign(CENTER, CENTER);
+            let textX = width / 2;
+            let textYStart = secondCircleY - (secondCircleY - circleY) / 2 + (textString.length * letterSpacing) / 2;
+
+            if (textTimer++ % textInterval == 0 && textIndex < textString.length) {
+                textIndex++;
+            }
+
+            for (let i = 0; i < textIndex; i++) {
+                push();
+                translate(textX, textYStart - i * letterSpacing);
+                rotate(-HALF_PI);
+
+                // Change color for a specific part of the string
+                if (textString.charAt(i) === 'E' || textString.charAt(i) === 'X' || textString.charAt(i) === 'T') {
+                    fill(255, 0, 0); // Red color for 'D', 'I', 'N'
+                } else {
+                    fill(255); // White for other letters
+                }
+
+                text(textString.charAt(i), 0, 0);
+                pop();
+            }
+            textFlag = true;
+
+        }
+
+        function createMaskedCircle(img) {
+            let gfx = createGraphics(circleSize, circleSize);
+            gfx.imageMode(CENTER);
+            gfx.image(img, circleSize / 2, circleSize / 2, circleSize, circleSize);
+            gfx.loadPixels();
+            for (let y = 0; y < gfx.height; y++) {
+                for (let x = 0; x < gfx.width; x++) {
+                    let d = dist(x, y, gfx.width / 2, gfx.height / 2);
+                    if (d > circleSize / 2) {
+                        gfx.set(x, y, color(0, 0, 0, 0));
+                    }
+                }
+            }
+            gfx.updatePixels();
+            return gfx;
+        }
+    </script>
+</body>
+</html>
